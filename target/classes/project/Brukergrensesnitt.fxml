@@ -7,12 +7,10 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.AppKontroller">
    <children>
@@ -34,11 +32,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="459.0" prefWidth="406.0">
                <children>
-                  <ImageView fitHeight="240.0" fitWidth="321.0" layoutX="72.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../Desktop/Spotify%20logoer/Skjermbilde%202024-03-23%20kl.%2012.16.25.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fitHeight="240.0" fitWidth="321.0" layoutX="32.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true" />
                   <Text layoutX="157.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Din bil">
                      <font>
                         <Font name="Avenir Roman" size="24.0" />
@@ -80,7 +74,7 @@
                   </Text>
                   <Button layoutX="47.0" layoutY="290.0" mnemonicParsing="false" onAction="#standard" text="Standard" />
                   <Button layoutX="141.0" layoutY="290.0" mnemonicParsing="false" onAction="#sport" text="Sport" />
-                  <Button layoutX="81.0" layoutY="387.0" mnemonicParsing="false" text="Bestill din bil!" />
+                  <Button layoutX="81.0" layoutY="387.0" mnemonicParsing="false" onAction="#bestill" text="Bestill din bil!" />
                   <Button layoutX="44.0" layoutY="126.0" mnemonicParsing="false" onAction="#suv" text="SUV" />
                   <Button layoutX="128.0" layoutY="126.0" mnemonicParsing="false" onAction="#sedan" text="Sedan" />
                </children>
