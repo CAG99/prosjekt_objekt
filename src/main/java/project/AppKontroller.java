@@ -9,4 +9,32 @@ public class AppKontroller {
     @FXML private TextArea pris;
 
     @FXML
-    public void Suv
+    public void suv(){
+
+    }
+    @FXML
+    public void sedan(){
+
+    }
+    @FXML
+    public void rød(){
+
+    }
+    @FXML
+    public void svart(){
+
+    }
+    @FXML
+    public void blå(){
+
+    }
+    @FXML
+    public void standard(){
+
+    } 
+    @FXML
+    public void sport(){
+
+    }
+    
+}

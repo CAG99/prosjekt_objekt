@@ -12,7 +12,7 @@ public class BilApp extends Application{
     @Override
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Bil App");
-        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("BrukerGrensesnitt.fxml"))));
+        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Brukergrensesnitt.fxml"))));
         primaryStage.show();
     }
 
