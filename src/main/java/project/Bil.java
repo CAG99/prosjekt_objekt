@@ -1,45 +1,39 @@
 package project;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class Bil {
-    // Hva som skal velges:
+public class Bil implements BilOppsett{
+    // Attributter:
     private String modell;
     private String farge;
     private String felger;
 
-    // Lister med valgmuligheter:
-    private List<String> modellValg = Arrays.asList("Sedan", "SUV");
-    private List<String> fargerValg = Arrays.asList("Rød", "Blå", "Svart");
-    private List<String> felgerValg = Arrays.asList("Standard", "Sport");
-
-    public Bil(){
-        
-    }
-
-    // get metoder
+    // Get-metoder
+    @Override
     public String getFarge() {
         return farge;
     }
 
+    @Override
     public String getModell() {
         return modell;
     }
 
+    @Override
     public String getFelger() {
         return felger;
     }
 
-    // set metoder
+    // Set-metoder
+    @Override
     public void setModell(String modell) {
         this.modell = modell;
     }
 
+    @Override
     public void setFarge(String farge) {
         this.farge = farge;
     }
 
+    @Override
     public void setFelger(String felger) {
         this.felger = felger;
     }

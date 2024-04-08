@@ -1,9 +1,10 @@
 package project;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 public class BestillBil {
@@ -14,19 +15,59 @@ public class BestillBil {
     }
 
     public void leggTilBestilling(String epost, Bil bil){
-        bestillinger.put(epost, bil);
-        System.out.println(bestillinger.get(epost));
+        if (bestillinger.containsKey(epost)) {
+            throw new IllegalStateException("Pga. begrenset produksjonskapasitet kan man kun bestille 1 bil per epost");
+        } else {
+             bestillinger.put(epost, bil);
+        }
     }
 
-    public void skrivBestillingTilFil(String epost, Bil bil){
+    public void skrivBestillingTilFil(){
         try {
             PrintWriter skriver = new PrintWriter("Bestillinger.txt");
-            skriver.println(epost + "," + bil.getModell() + "," + bil.getFarge() + "," + bil.getFelger());
+            for (Map.Entry<String, Bil> bil : bestillinger.entrySet()) {
+                String epost = bil.getKey();
+                String modell = bil.getValue().getModell();
+                String farge = bil.getValue().getFarge();
+                String felger = bil.getValue().getFelger();
+                skriver.println(epost + "," + modell + "," + farge + "," + felger);
+            }
 
             skriver.flush();
             skriver.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public Bil hentBestillinger(String epost) throws FileNotFoundException{
+        Scanner leser = new Scanner(new File("Bestillinger.txt"));
+        HashMap<String, Bil> bilBestillinger = new HashMap<>();
+
+        while (leser.hasNextLine()) {
+            String bestillString = leser.nextLine();
+            String[] bestillingInfo = bestillString.split(",");
+
+            System.out.println(bestillingInfo[0]);
+
+            String eposter = bestillingInfo[0];
+            String modell = bestillingInfo[1];
+            String farge = bestillingInfo[2];
+            String felger = bestillingInfo[3];
+
+            Bil bil = new Bil();
+            bil.setModell(modell);
+            bil.setFarge(farge);
+            bil.setFelger(felger); 
+
+            bilBestillinger.put(eposter, bil);
+        }
+        leser.close();
+
+        if (bilBestillinger.containsKey(epost)) {
+            return bilBestillinger.get(epost);
+        } else {
+            return null;
         }
     }
 
@@ -56,39 +97,5 @@ public class BestillBil {
         }
     }
 
-
-    /* 
-    // Epost
-    public String getEmail() {
-        return epost;
-    }
-
-    public void setEmail(String epost) {
-
-        // Sjekker om navnet er med i eposten
-        String navnEpost = navn.toLowerCase().replace(" ", ".");
-        
-        if (!epost.contains(navnEpost) || !epost.contains("@")) {
-            throw new IllegalArgumentException("Eposten må være på formen: fornavn.etternavn@domene.landskode");
-        }
-
-        // Sjekker om landskoden er med i listen over gyldige landskoder
-        String[] deltEpost = epost.split("\\.", 3);
-        String siste = deltEpost[deltEpost.length - 1];
-
-        boolean gyldigLandskode = false;
-        for (String kode : landskoder) {
-            if (kode.equals(siste)) {
-                gyldigLandskode = true;
-                break;
-            }
-        }
-        if (!gyldigLandskode) {
-            throw new IllegalArgumentException("Ikke en gyldig landskode!");
-        }
-
-        this.epost = epost;    
-    }
-    */
 
 }

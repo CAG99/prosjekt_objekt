@@ -22,7 +22,7 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Bestillinger">
               <items>
-                <MenuItem mnemonicParsing="false" text="Se bestillinger" />
+                <MenuItem mnemonicParsing="false" onAction="#visBestilling" text="Se bestillinger" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Hjelp">
@@ -80,11 +80,11 @@
                         <Font name="Avenir Roman" size="14.0" />
                      </font>
                   </Text>
-                  <Button layoutX="49.0" layoutY="288.0" mnemonicParsing="false" onAction="#standard" prefWidth="67.0" text="Standard" />
-                  <Button layoutX="143.0" layoutY="288.0" mnemonicParsing="false" onAction="#sport" prefWidth="67.0" text="Sport" />
+                  <Button fx:id="standard_knapp" layoutX="49.0" layoutY="288.0" mnemonicParsing="false" onAction="#standard" prefWidth="67.0" text="Standard" />
+                  <Button fx:id="sport_knapp" layoutX="143.0" layoutY="288.0" mnemonicParsing="false" onAction="#sport" prefWidth="67.0" text="Sport" />
                   <Button layoutX="84.0" layoutY="406.0" mnemonicParsing="false" onAction="#bestill" text="Bestill din bil!" />
-                  <Button layoutX="56.0" layoutY="128.0" mnemonicParsing="false" onAction="#suv" prefWidth="55.0" text="SUV" />
-                  <Button layoutX="140.0" layoutY="128.0" mnemonicParsing="false" onAction="#sedan" prefWidth="55.0" text="Sedan" />
+                  <Button fx:id="suv_knapp" layoutX="56.0" layoutY="128.0" mnemonicParsing="false" onAction="#suv" prefWidth="55.0" text="SUV" />
+                  <Button fx:id="sedan_knapp" layoutX="140.0" layoutY="128.0" mnemonicParsing="false" onAction="#sedan" prefWidth="55.0" text="Sedan" />
                   <Button layoutX="34.0" layoutY="358.0" mnemonicParsing="false" onAction="#resultat" text="Trykk her for å se din bil og pris!" />
                </children>
             </AnchorPane>
