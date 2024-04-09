@@ -1,1 +1,2 @@
-matvedvik@gmail.com,Sedan,Rød,Sport
+to@gmail.no,Sedan,Rød,Standard
+en@gmail.no,Sedan,Blå,Sport

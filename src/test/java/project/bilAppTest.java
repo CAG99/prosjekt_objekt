@@ -16,19 +16,24 @@ import org.junit.jupiter.api.Test;
 public class bilAppTest {
     private BestillBil bestill;
 
+    //Ny bestilling før hver test
     @BeforeEach
     public void setup(){
         bestill = new BestillBil();
     }
 
+
     @Test
     @DisplayName("Sjekke riktig valg av spesifikasjoner")
     public void lagBil(){
+        //Setter spesifikasjoner på bil
         Bil bil1 = new Bil();
 
         bil1.setModell("SUV");
         bil1.setFarge("Rød");
         bil1.setFelger("Sport");
+
+        //Sjekker at spesifikasjoner stemmer
         assertTrue(bil1.getModell() == "SUV" && bil1.getFarge() == "Rød" && bil1.getFelger() == "Sport");
 
         //Sjekker at kun SUV endres til Sedan
@@ -39,6 +44,7 @@ public class bilAppTest {
     @Test
     @DisplayName("Sjekke at riktig bil blir lagt i bestillinger")
     public void leggBilIBestilling(){
+        //Setter spesifikasjoner
         Bil bil2 = new Bil();
         String epost = "mv@gmail.com";
 
@@ -47,6 +53,13 @@ public class bilAppTest {
         bil2.setFelger("Sport");
 
         bestill.leggTilBestilling(epost, bil2);
+
+        //Sjekker at riktig bestilling blir hentet
+        assertEquals(bil2, bestill.hentBestilling(epost));
+        //Sjekker at den ikke henter hvis det ikke finnes bestilling på mailen
+        assertThrows(RuntimeException.class, () -> {
+			bestill.hentBestilling("ukjent@hotmail.no");
+		}, "ingen bestilling på mail");
     }
 
     @Test
@@ -69,11 +82,11 @@ public class bilAppTest {
         bil3.setFarge("Rød");
         bil3.setFelger("Sport");
 
-        Priskalkulator kalk = new Priskalkulator(bil3);
+        Priskalkulator kalk = new Priskalkulator();
         
-        assertEquals(kalk.beregnPris(), 1389987.5);
+        assertEquals(kalk.beregnPris(bil3), 1389987.5);
         bil3.setFelger("Standard");
-        assertEquals(kalk.beregnPris(), 1323737.5);
+        assertEquals(kalk.beregnPris(bil3), 1323737.5);
 
     }
 
@@ -91,16 +104,19 @@ public class bilAppTest {
        
         try {
             bestill.skrivBestillingTilFil();
+
             BufferedReader leser = new BufferedReader(new FileReader("Bestillinger.txt"));
             String faktiskTekst = leser.readLine();
             leser.close();
-
+            
+            //Sjekker lest tekst mot forventet
             assertEquals(forventetTekst, faktiskTekst);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             try {
+                //sletter endringer
                 java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get("Bestillinger.txt"));
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -112,17 +128,22 @@ public class bilAppTest {
     @Test
     @DisplayName("Sjekke riktig henting av bestilling i fil")
     public void leseRiktigFil(){
+        //Oppretter to biler og legger til to bestillinger 
         Bil bil5 = new Bil();
         bil5.setModell("Sedan");
         bil5.setFarge("Blå");
         bil5.setFelger("Sport");
         bestill.leggTilBestilling("en@gmail.no", bil5);
 
-        bil5.setFarge("Rød");
-        bil5.setFelger("Standard");
-        bestill.leggTilBestilling("to@gmail.no", bil5);
+        Bil bil6 = new Bil();
+        bil6.setModell("Sedan");
+        bil6.setFarge("Rød");
+        bil6.setFelger("Standard");
+        bestill.leggTilBestilling("to@gmail.no", bil6);
+
         bestill.skrivBestillingTilFil();
 
+        //Sjekker at riktige biler blir hentet fra fil
         try {
             Bil lestBil1 = bestill.hentBestillinger("en@gmail.no");
             assertEquals("Sedan", lestBil1.getModell());
@@ -139,6 +160,12 @@ public class bilAppTest {
             e.printStackTrace();
         }
 
-
+        //Sjekker at det ikke hentes hvis mailen ikke har en bestilling
+        try {
+            assertEquals(null, bestill.hentBestillinger("hdfhfg@hsh.com"));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

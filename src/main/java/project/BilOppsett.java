@@ -1,6 +1,6 @@
 package project;
 
-public interface BilOppsett {
+public interface BilOppsett { // Grensesnitt for appen som Bil.java implementerer
     String getModell();
     String getFarge();
     String getFelger();

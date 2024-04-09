@@ -4,20 +4,19 @@ public class Priskalkulator {
     private String modell;
     private String farge;
     private String felger;
-    
-    public Priskalkulator(Bil bil){
-        this.modell = bil.getModell();
-        this.farge = bil.getFarge();
-        this.felger = bil.getFelger();
-    }
 
-    public double beregnPris(){
+    // Metode for å beregne pris 
+    public double beregnPris(Bil bil){
+        modell = bil.getModell();
+        farge = bil.getFarge();
+        felger = bil.getFelger();
+
         int prisModell = 0;
         int prisFarge = 0;
         int prisFelger = 0;
         double mva = 1.25;
         
-        switch (modell) {
+        switch (modell) { // Bruker switch for å legge til riktig pris basert på modell
             case "SUV":
                 prisModell = 1034990;
                 break;
@@ -27,7 +26,7 @@ public class Priskalkulator {
                 break;
         }
 
-        switch (farge) {
+        switch (farge) { // Bruker switch for å legge til riktig pris basert på farge
             case "Rød":
                 prisFarge = 24000;
                 break;
@@ -41,9 +40,9 @@ public class Priskalkulator {
                 break;
         }
 
-        switch (felger) {
+        switch (felger) { // Bruker switch for å legge til riktig pris basert på felger
             case "Sport":
-                if (modell == "SUV") {
+                if (modell == "SUV") { // Ulik pris for sportsfelger til SUV og sedan 
                     prisFelger = 53000;
                 }
                 else {
@@ -56,13 +55,11 @@ public class Priskalkulator {
                 break;
         }
         
-        return (prisModell+prisFarge+prisFelger)*mva;
+        return (prisModell+prisFarge+prisFelger)*mva; // Metoden returnerer prisen som en double 
     }
 }
 
-
-
-// priser: 
+// Liste over priser: 
 
 // SUV - 1 034 990  
 // SUV - svart = 15 000

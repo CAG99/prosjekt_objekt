@@ -23,10 +23,11 @@ public class AppKontroller {
     private String modell;
     private String farge;
     private String felger;
-    private BestillBil bestilling;
+    private BestillBil bestillinger;
 
+    // Konstruktør som oppretter en ny liste med bestillinger
     public AppKontroller(){
-        bestilling = new BestillBil();
+        bestillinger = new BestillBil();
     }
 
     // Tekstfelt
@@ -78,7 +79,8 @@ public class AppKontroller {
         }
     }
 
-    // Metoder for alle knappene
+    // Metoder for alle knappene. Trykker man feks først på SUV, og deretter på Sedan overskrives modell-variabelen 
+    // Implementerer metoden for å vise at knappen er markert
     @FXML
     public void suv(){
         modell = "SUV";
@@ -133,24 +135,24 @@ public class AppKontroller {
         dialog.setHeaderText("Søk etter bestilling");
         dialog.setContentText("Vennligst skriv inn din e-post:");
 
-        // Viser dialogen og venter på input
+        // Viser dialogboksen og venter på input
         Optional<String> epost_input = dialog.showAndWait();
 
         epost_input.ifPresent(epost -> {
             try {
                 
-                if (bestilling.hentBestillinger(epost) == null) {
+                if (bestillinger.hentBestillinger(epost) == null) { // Sjekker om det IKKE er knyttet en bestilling til eposten
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Feil!");
                     alert.setHeaderText("Finner ikke bestilling");
-                    alert.setContentText("Det finnes ingen bestilling knyttet til e-posten du skrev inn"); // Setter feilmeldingsteksten
+                    alert.setContentText("Det finnes ingen bestilling knyttet til e-posten du skrev inn"); // Setter feilmeldingsteksten manuelt 
                     alert.showAndWait(); // Viser dialogboksen og venter på at brukeren lukker den
 
-                } else {
-                    Bil bil = bestilling.hentBestillinger(epost);
+                } else { // Hvis det finnes en bestilling knyttet til eposten
+                    Bil bil = bestillinger.hentBestillinger(epost);
                     String bildeStreng = bil.getModell() + bil.getFarge() + bil.getFelger()  + ".jpg";
-                    Priskalkulator kalk = new Priskalkulator(bil);
-                    double pris = kalk.beregnPris();
+                    Priskalkulator kalk = new Priskalkulator();
+                    double pris = kalk.beregnPris(bil);
 
                     // Oppretter en ny scene med VBox
                     VBox root = new VBox();
@@ -203,8 +205,8 @@ public class AppKontroller {
         bil.setFelger(felger);
 
         // Bruker deretter metoden regnet ut i Priskalkulator-klassen
-        Priskalkulator kalkulator = new Priskalkulator(bil);
-        double bilPris = kalkulator.beregnPris();
+        Priskalkulator kalkulator = new Priskalkulator();
+        double bilPris = kalkulator.beregnPris(bil);
         pris.setText(bilPris + " kr (ink. MVA)");
     }
 
@@ -212,30 +214,29 @@ public class AppKontroller {
     @FXML
     public void bestill(){
 
-        if (modell == null || farge == null || felger == null) {
+        if (modell == null || farge == null || felger == null) { // Sjekker om det mangler en av valgene (modell, farge, felger)
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Feil!");
             alert.setHeaderText("Mangler spesifikasjon");
-            alert.setContentText("Må velge modell, farge og felger for å bestille"); // Setter feilmeldingsteksten
+            alert.setContentText("Må velge modell, farge og felger for å bestille"); // Setter feilmeldingsteksten manuelt
             alert.showAndWait(); // Viser dialogboksen og venter på at brukeren lukker den
 
-        } else {
+        } else { // Hvis alle valgene er gjort opprettes en bestilling
             try {
                 String epostStr = epost.getText();
                 
-
-                if (bestilling.sjekkEpost(epostStr)) {
+                if (bestillinger.sjekkEpost(epostStr)) {
                     Bil bil = new Bil();
                     bil.setModell(modell);
                     bil.setFarge(farge);
                     bil.setFelger(felger);
 
                     //Legger inn bestilling og skriver til fil
-                    bestilling.leggTilBestilling(epostStr, bil);
-                    bestilling.skrivBestillingTilFil();
+                    bestillinger.leggTilBestilling(epostStr, bil); 
+                    bestillinger.skrivBestillingTilFil();
                 }
 
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) { // Dersom eposten mangler '@'
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Feil!");
                 alert.setHeaderText("Ugyldig e-post");
@@ -243,7 +244,7 @@ public class AppKontroller {
                 alert.showAndWait(); // Viser dialogboksen og venter på at brukeren lukker den
             }
 
-            catch (IllegalStateException e) {
+            catch (IllegalStateException e) { // Dersom eposten mangler gyldig landskode
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Feil!");
                 alert.setHeaderText("For mange bestillinger");
